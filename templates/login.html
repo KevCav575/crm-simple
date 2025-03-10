@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - CRM Simple</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="login-body">
+    <div class="login-container">
+        <div class="logo">
+            <h1>CRM Simple</h1>
+        </div>
+        
+        <!-- Formulario de Login -->
+        <form id="login-form" class="toggle-form active">
+            <h2 class="form-title">Iniciar Sesión</h2>
+            
+            <div class="form-group">
+                <label for="login-email" class="form-label">Email</label>
+                <input type="email" id="login-email" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="login-password" class="form-label">Contraseña</label>
+                <input type="password" id="login-password" class="form-input" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full">Iniciar Sesión</button>
+            
+            <div class="error-message" id="login-error"></div>
+            
+            <div class="form-footer">
+                <p>¿No tienes una cuenta? <a href="#" id="show-register">Regístrate</a></p>
+            </div>
+        </form>
+        
+        <!-- Formulario de Registro -->
+        <form id="register-form" class="toggle-form">
+            <h2 class="form-title">Crear Cuenta</h2>
+            
+            <div class="form-group">
+                <label for="register-name" class="form-label">Nombre</label>
+                <input type="text" id="register-name" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="register-email" class="form-label">Email</label>
+                <input type="email" id="register-email" class="form-input" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="register-password" class="form-label">Contraseña</label>
+                <input type="password" id="register-password" class="form-input" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full">Registrarse</button>
+            
+            <div class="error-message" id="register-error"></div>
+            
+            <div class="form-footer">
+                <p>¿Ya tienes una cuenta? <a href="#" id="show-login">Iniciar Sesión</a></p>
+            </div>
+        </form>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/client.js') }}"></script>
+    <script>
+        // Toggle entre formularios
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const showRegisterBtn = document.getElementById('show-register');
+        const showLoginBtn = document.getElementById('show-login');
+        
+        showRegisterBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            loginForm.classList.remove('active');
+            registerForm.classList.add('active');
+        });
+        
+        showLoginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            registerForm.classList.remove('active');
+            loginForm.classList.add('active');
+        });
+        
+        // Manejar inicio de sesión
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorElement = document.getElementById('login-error');
+            
+            try {
+                const success = await login(email, password);
+                
+                if (success) {
+                    // Redirigir al dashboard
+                    window.location.href = '/';
+                }
+            } catch (error) {
+                errorElement.textContent = error.message;
+                errorElement.style.display = 'block';
+            }
+        });
+        
+        // Manejar registro
+        registerForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const errorElement = document.getElementById('register-error');
+            
+            try {
+                const success = await register(name, email, password);
+                
+                if (success) {
+                    // Mostrar mensaje de éxito y cambiar al formulario de login
+                    alert('Cuenta creada exitosamente. Por favor inicia sesión.');
+                    registerForm.classList.remove('active');
+                    loginForm.classList.add('active');
+                    registerForm.reset();
+                }
+            } catch (error) {
+                errorElement.textContent = error.message;
+                errorElement.style.display = 'block';
+            }
+        });
+        
+        // Verificar si ya hay una sesión activa
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('authToken');
+            
+            if (token) {
+                // Ya hay una sesión, redirigir al dashboard
+                window.location.href = '/';
+            }
+        });
+    </script>
+</body>
+</html>

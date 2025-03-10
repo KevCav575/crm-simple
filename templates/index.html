@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Simple</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>CRM Simple</h1>
+            </div>
+            <nav class="nav-menu">
+                <div class="nav-item active" data-section="dashboard">
+                    <span class="nav-item-icon">📊</span>
+                    Dashboard
+                </div>
+                <div class="nav-item" data-section="customers">
+                    <span class="nav-item-icon">👥</span>
+                    Clientes
+                </div>
+                <div class="nav-item" data-section="contacts">
+                    <span class="nav-item-icon">📞</span>
+                    Contactos
+                </div>
+                <div class="nav-item" data-section="deals">
+                    <span class="nav-item-icon">💰</span>
+                    Oportunidades
+                </div>
+                <div class="nav-item" data-section="tasks">
+                    <span class="nav-item-icon">✅</span>
+                    Tareas
+                </div>
+            </nav>
+            <div class="user-info">
+                <span class="user-name" id="user-name">Usuario</span>
+                <button class="logout-btn" id="logout-btn">Cerrar sesión</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="header">
+                    <h2 class="page-title">Dashboard</h2>
+                    <div>
+                        <button class="btn btn-primary" id="refresh-dashboard">Actualizar datos</button>
+                    </div>
+                </div>
+                
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3 class="card-title">Total de Clientes</h3>
+                        <p class="card-value">0</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Oportunidades Abiertas</h3>
+                        <p class="card-value">0</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Ingresos del Mes</h3>
+                        <p class="card-value">$0</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Tareas Pendientes</h3>
+                        <p class="card-value">0</p>
+                    </div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h3 class="card-title">Actividad Reciente</h3>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <div class="activity-icon">👋</div>
+                            <div>
+                                <p>¡Bienvenido a tu CRM! Comienza añadiendo clientes.</p>
+                                <p class="activity-time">Ahora</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Customers Section -->
+            <section id="customers" class="section">
+                <div class="header">
+                    <h2 class="page-title">Clientes</h2>
+                    <div>
+                        <button class="btn btn-primary" id="add-customer-btn">Añadir Cliente</button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Empresa</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customers-table-body">
+                            <tr>
+                                <td colspan="6">Cargando clientes...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Contacts Section -->
+            <section id="contacts" class="section">
+                <div class="header">
+                    <h2 class="page-title">Contactos</h2>
+                    <div>
+                        <button class="btn btn-primary" id="add-contact-btn">Añadir Contacto</button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cliente</th>
+                                <th>Email</th>
+                                <th>Teléfono</th>
+                                <th>Cargo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6">Cargando contactos...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Deals Section -->
+            <section id="deals" class="section">
+                <div class="header">
+                    <h2 class="page-title">Oportunidades</h2>
+                    <div>
+                        <button class="btn btn-primary" id="add-deal-btn">Añadir Oportunidad</button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Cliente</th>
+                                <th>Valor</th>
+                                <th>Etapa</th>
+                                <th>Fecha Cierre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6">Cargando oportunidades...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section id="tasks" class="section">
+                <div class="header">
+                    <h2 class="page-title">Tareas</h2>
+                    <div>
+                        <button class="btn btn-primary" id="add-task-btn">Añadir Tarea</button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Relacionado Con</th>
+                                <th>Fecha Límite</th>
+                                <th>Prioridad</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6">Cargando tareas...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Customer Modal -->
+    <div id="customer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Añadir Cliente</h2>
+            <form id="customer-form">
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-input" id="customer-name" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Empresa</label>
+                            <input type="text" class="form-input" id="customer-company" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" id="customer-email" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Teléfono</label>
+                            <input type="tel" class="form-input" id="customer-phone">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estado</label>
+                    <select class="form-input" id="customer-status">
+                        <option value="new">Nuevo</option>
+                        <option value="contacted">Contactado</option>
+                        <option value="qualified">Calificado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notas</label>
+                    <textarea class="form-input" id="customer-notes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Añadir Contacto</h2>
+            <form id="contact-form">
+                <div class="form-group">
+                    <label class="form-label">Cliente</label>
+                    <select class="form-input" id="contact-customer" required>
+                        <option value="">Seleccionar cliente...</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-input" id="contact-name" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Cargo</label>
+                            <input type="text" class="form-input" id="contact-position">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" id="contact-email" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Teléfono</label>
+                            <input type="tel" class="form-input" id="contact-phone">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notas</label>
+                    <textarea class="form-input" id="contact-notes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Deal Modal -->
+    <div id="deal-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Añadir Oportunidad</h2>
+            <form id="deal-form">
+                <div class="form-group">
+                    <label class="form-label">Título</label>
+                    <input type="text" class="form-input" id="deal-title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Cliente</label>
+                    <select class="form-input" id="deal-customer" required>
+                        <option value="">Seleccionar cliente...</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Valor</label>
+                            <input type="number" class="form-input" id="deal-value" min="0" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Etapa</label>
+                            <select class="form-input" id="deal-stage">
+                                <option value="prospect">Prospecto</option>
+                                <option value="negotiation">Negociación</option>
+                                <option value="proposal">Propuesta</option>
+                                <option value="won">Ganada</option>
+                                <option value="lost">Perdida</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Fecha de Cierre</label>
+                    <input type="date" class="form-input" id="deal-close-date">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notas</label>
+                    <textarea class="form-input" id="deal-notes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Añadir Tarea</h2>
+            <form id="task-form">
+                <div class="form-group">
+                    <label class="form-label">Título</label>
+                    <input type="text" class="form-input" id="task-title" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Tipo</label>
+                            <select class="form-input" id="task-related-type">
+                                <option value="">General</option>
+                                <option value="customer">Cliente</option>
+                                <option value="contact">Contacto</option>
+                                <option value="deal">Oportunidad</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Relacionado con</label>
+                            <select class="form-input" id="task-related-id">
+                                <option value="">Seleccionar...</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Fecha límite</label>
+                            <input type="date" class="form-input" id="task-due-date" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label">Prioridad</label>
+                            <select class="form-input" id="task-priority">
+                                <option value="low">Baja</option>
+                                <option value="medium" selected>Media</option>
+                                <option value="high">Alta</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estado</label>
+                    <select class="form-input" id="task-status">
+                        <option value="pending" selected>Pendiente</option>
+                        <option value="in_progress">En Progreso</option>
+                        <option value="completed">Completada</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Descripción</label>
+                    <textarea class="form-input" id="task-description" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/client.js') }}"></script>
+</body>
+</html>
