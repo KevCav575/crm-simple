@@ -9,12 +9,21 @@ from functools import wraps
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///crm.db')
+
+# Configuración específica para Render
+# Ajusta la URL de la base de datos para manejar correctamente SQLite y PostgreSQL
+database_url = os.environ.get('DATABASE_URL')
+if database_url and database_url.startswith('postgres://'):
+    # Render usa 'postgres://', pero SQLAlchemy necesita 'postgresql://'
+    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///crm.db')
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 CORS(app)
-
 # Database Models
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -744,9 +753,10 @@ def get_dashboard(current_user):
         'recent_activities': recent_activities
     }), 200
 
-# Initialize database
 with app.app_context():
     db.create_all()
 
+# Configuración para Render - usa el puerto asignado por la plataforma
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
